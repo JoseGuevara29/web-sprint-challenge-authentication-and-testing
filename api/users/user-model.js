@@ -10,7 +10,7 @@ function findUsers() {
 }
 
 function findByUsername(username) {
-  return db("users").select("*").where("username", username).first();
+  return db("users").where("username", username);
 }
 
 function findByUserId(id) {

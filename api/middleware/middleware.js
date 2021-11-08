@@ -3,7 +3,9 @@ const bcrypt = require("bcryptjs");
 
 const checkPayload = (req, res, next) => {
   try {
+    console.log(req.body);
     const { username, password } = req.body;
+    console.log("checkPayload", username, password);
     if (!username || !password) {
       res.status(404).json({ message: "username and password required" });
     } else {
@@ -12,6 +14,7 @@ const checkPayload = (req, res, next) => {
       next();
     }
   } catch (err) {
+    // console.log(req.body);
     next(err);
   }
 };
@@ -19,10 +22,11 @@ const checkPayload = (req, res, next) => {
 const checkForDuplicates = async (req, res, next) => {
   try {
     const user = await Users.findByUsername(req.body.username);
+    console.log("checkForDuplicates findByUsername user: ", user);
     if (!user.length) {
       next();
     } else {
-      return res.status(400).json({
+      res.status(400).json({
         message: "Username is taken. Please use another username.",
       });
     }

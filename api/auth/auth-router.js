@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { jwtSecret, JWT_SECRET } = require("../config/secrets");
+const { JWT_SECRET } = require("../config/secrets");
 const Users = require("../users/user-model");
 const {
   checkPayload,
@@ -37,7 +37,7 @@ router.post("/register", checkForDuplicates, checkPayload, (req, res, next) => {
       the response body should include a string exactly as follows: "username taken".
   */
   const { username, password } = req.body;
-
+  // console.log(username, password);
   const hash = bcrypt.hashSync(password, 8);
   Users.add({ username, password: hash })
     .then((newUser) => {
