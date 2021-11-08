@@ -35,25 +35,21 @@ const checkForDuplicates = async (req, res, next) => {
   }
 };
 
-// const validateUser = async (req, res, next) => {
-//   try {
-//     const user = await Users.findByUsername(req.body.username);
-//     const passwordValid = await bcrypt.compare(
-//       req.body.password,
-//       user.password
-//     );
-//     console.log("validate user: ", user);
-//     console.log("validate PV: ", passwordValid);
-//     if (!user || !passwordValid) {
-//       res.status(401).json({
-//         message: "invalid credentials",
-//       });
-//     } else {
-//       next();
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// };
+const validateUser = async (req, res, next) => {
+  try {
+    const user = await Users.findByUsername(req.body.username);
 
-module.exports = { checkPayload, checkForDuplicates };
+    if (!user) {
+      // console.log("validate user: ", user);
+      res.status(401).json({
+        message: "invalid credentials",
+      });
+    } else {
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { checkPayload, checkForDuplicates, validateUser };

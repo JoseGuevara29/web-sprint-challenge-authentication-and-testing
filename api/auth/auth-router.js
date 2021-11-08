@@ -6,6 +6,7 @@ const Users = require("../users/user-model");
 const {
   checkPayload,
   checkForDuplicates,
+  validateUser,
 } = require("../middleware/middleware");
 
 router.post("/register", checkPayload, checkForDuplicates, (req, res, next) => {
@@ -45,7 +46,7 @@ router.post("/register", checkPayload, checkForDuplicates, (req, res, next) => {
     .catch(next);
 });
 
-router.post("/login", checkPayload, (req, res, next) => {
+router.post("/login", checkPayload, validateUser, (req, res, next) => {
   // res.end("implement login, please!");
   /*
     IMPLEMENT
@@ -73,8 +74,10 @@ router.post("/login", checkPayload, (req, res, next) => {
   const { username, password } = req.body;
 
   Users.findByUsername(username)
-    .then((user) => {
-      if (user && bcrypt.compare(password, user.password)) {
+    .then(([user]) => {
+      console.log("uuuuuuser", user);
+
+      if (user && bcrypt.compareSync(password, user.password)) {
         const token = makeToken(user);
         res.status(200).json({
           message: `welcome, ${username}`,
