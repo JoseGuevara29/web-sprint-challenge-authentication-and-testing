@@ -17,13 +17,13 @@ module.exports = (req, res, next) => {
   if (token) {
     jwt.verify(token, JWT_SECRET, (error, decoded) => {
       if (error) {
-        next({ status: 401, message: "token invalid" });
+        res.status(401).json("token invalid" + err.message);
       } else {
         req.decodedJwt = decoded;
         next();
       }
     });
   } else {
-    next({ status: 401, message: "token required" });
+    res.status(401).json("token required");
   }
 };
