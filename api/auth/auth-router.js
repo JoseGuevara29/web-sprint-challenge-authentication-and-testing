@@ -9,7 +9,7 @@ const {
   validateUser,
 } = require("../middleware/middleware");
 
-router.post("/register", checkForDuplicates, checkPayload, (req, res, next) => {
+router.post("/register", checkPayload, checkForDuplicates, (req, res, next) => {
   // res.end("implement register, please!");
   /*
     IMPLEMENT
