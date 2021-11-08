@@ -81,7 +81,7 @@ router.post("/login", validateUser, checkPayload, (req, res, next) => {
           token,
         });
       } else {
-        next({ status: 401, message: "invalid credentials" });
+        res.status(401).json({ status: 401, message: "invalid credentials" });
       }
     })
     .catch(next);

@@ -1,24 +1,25 @@
 const db = require("../../data/dbConfig");
 
-function find() {
+async function add(newUser) {
+  const [id] = await db("users as u").insert(newUser);
+  return findByUserId(id);
+}
+
+function findUsers() {
   return db("users");
 }
 
-function findById(user_id) {
-  return db("users").where("id", user_id).first();
-}
-
 function findByUsername(username) {
-  return db("users").where("username", username);
+  return db("users").select("*").where("username", username).first();
 }
 
-function validatePassword(password) {
-  return db("users").where("password", password);
+function findByUserId(id) {
+  return db("users as u").select("*").where("id", id).first();
 }
 
-async function insert(user) {
-  const user_id = await db("users").insert(user);
-  return findById(user_id);
-}
-
-module.exports = { find, findById, findByUsername, validatePassword, insert };
+module.exports = {
+  add,
+  findUsers,
+  findByUsername,
+  findByUserId,
+};
