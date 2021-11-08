@@ -10,7 +10,7 @@ const {
 } = require("../middleware/middleware");
 
 router.post("/register", checkForDuplicates, checkPayload, (req, res, next) => {
-  res.end("implement register, please!");
+  // res.end("implement register, please!");
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
