@@ -1,4 +1,5 @@
 const Users = require("../users/user-model");
+const bcrypt = require("bcryptjs");
 
 const checkPayload = (req, res, next) => {
   try {
@@ -33,8 +34,11 @@ const checkForDuplicates = async (req, res, next) => {
 const validateUser = async (req, res, next) => {
   try {
     const user = await Users.findByUsername(req.body.username);
-    const password = await Users.validatePassword(req.body.password);
-    if (!user || !password) {
+    const passwordValid = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!user || !passwordValid) {
       return res.status(401).json({
         message: "invalid credentials",
       });

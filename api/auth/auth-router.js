@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { jwtSecret } = require("../config/secrets");
+const { jwtSecret, JWT_SECRET } = require("../config/secrets");
 const Users = require("../users/user-model");
 const {
   checkPayload,
@@ -45,6 +45,7 @@ router.post("/register", checkForDuplicates, checkPayload, (req, res, next) => {
     })
     .catch(next);
 });
+
 router.post("/login", validateUser, checkPayload, (req, res, next) => {
   // res.end("implement login, please!");
   /*
@@ -73,7 +74,7 @@ router.post("/login", validateUser, checkPayload, (req, res, next) => {
   const { username, password } = req.body;
 
   Users.findByUsername(username)
-    .then(([user]) => {
+    .then((user) => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = makeToken(user);
         res.status(200).json({
@@ -93,9 +94,9 @@ function makeToken(user) {
     username: user.username,
   };
   const options = {
-    expiresIn: "500s",
+    expiresIn: "1d",
   };
-  return jwt.sign(payload, jwtSecret, options);
+  return jwt.sign(payload, JWT_SECRET, options);
 }
 
 module.exports = router;
