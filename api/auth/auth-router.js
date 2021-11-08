@@ -75,8 +75,6 @@ router.post("/login", checkPayload, validateUser, (req, res, next) => {
 
   Users.findByUsername(username)
     .then(([user]) => {
-      console.log("uuuuuuser", user);
-
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = makeToken(user);
         res.status(200).json({

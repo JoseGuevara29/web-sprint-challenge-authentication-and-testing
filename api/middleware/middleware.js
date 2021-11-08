@@ -1,5 +1,4 @@
 const Users = require("../users/user-model");
-const bcrypt = require("bcryptjs");
 
 const checkPayload = (req, res, next) => {
   try {
